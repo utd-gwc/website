@@ -11,7 +11,7 @@ This is a Express.JS backend that uses Mongoose to interact with a MongoDB Atlas
     "title": "String",
     "description": "String",
     "date": "DateString",
-    "flyerUrl": "String" // (preferably shortened)
+    "flyerUrl": "ShortenedURLString"
 },
 ```
 #### Controller
@@ -30,9 +30,9 @@ This is a Express.JS backend that uses Mongoose to interact with a MongoDB Atlas
     "name": "String",
     "position": "String",
     "bio": "String",
-    "profilePhotoUrl": "String", // (preferably shortened)
+    "profilePhotoUrl": "ShortenedURLString",
     "externalLinks": {
-      "Key": "Value"
+      "Key": "Value",
       "GITHUB": "https://github.com/utd-gwc"
     },
 },
