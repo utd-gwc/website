@@ -21,7 +21,7 @@ var corsOptions = {
   },
 };
 
-app.use(cors(corsOptions));
+app.use(cors());
 
 // parse requests of content-type: application/json
 app.use(bodyParser.json());
@@ -31,7 +31,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 // simple route
 app.get("/", (req, res) => {
-  res.json({ message: "Welcome to the Girls Who Code website backend! Last Updated: 10/22/2020 @ 6:24:00PMCST" });
+  res.json({ message: "Welcome to the Girls Who Code website backend! Last Updated: 10/22/2020 @ 6:25:45PMCST" });
 });
 
 require("./app/routes/event.routes.js")(app);
