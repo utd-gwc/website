@@ -31,7 +31,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 // simple route
 app.get("/", (req, res) => {
-  res.json({ message: "Welcome to the Girls Who Code website backend!" });
+  res.json({ message: "Welcome to the Girls Who Code website backend! Last Updated: 10/22/2020 @ 6:24:00PMCST" });
 });
 
 require("./app/routes/event.routes.js")(app);
