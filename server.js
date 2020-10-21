@@ -7,25 +7,10 @@ const app = express();
 
 const allowedOrigins = ["http://localhost:8081", "https://utd-gwc.github.io/"];
 var corsOptions = {
-  origin: function (origin, callback) {
-    // allow requests with no origin
-    // (like mobile apps or curl requests)
-    if (origin == null) return callback(null, true);
-    if (allowedOrigins.indexOf(origin) < 0) {
-      var msg =
-        "The CORS policy for this site does not " +
-        "allow access from the specified Origin.";
-      return callback(new Error(msg), false);
-    }
-    return callback(null, true);
-  },
-};
-
-var corsOptions2 = {
   origin: allowedOrigins,
 };
 
-app.use(cors(corsOptions2));
+app.use(cors(corsOptions));
 
 // parse requests of content-type: application/json
 app.use(bodyParser.json());
@@ -37,7 +22,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.get("/", (req, res) => {
   res.json({
     message:
-      "Welcome to the Girls Who Code website backend! Last Updated: 10/20/2020 @ 11:25:38PMCST",
+      "Welcome to the Girls Who Code website backend! Last Updated: 10/20/2020 @ 11:28:38PMCST",
   });
 });
 
