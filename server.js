@@ -10,8 +10,8 @@ var corsOptions = {
   origin: function (origin, callback) {
     // allow requests with no origin
     // (like mobile apps or curl requests)
-    if (!origin) return callback(null, true);
-    if (allowedOrigins.indexOf(origin) === -1) {
+    if (origin == null) return callback(null, true);
+    if (allowedOrigins.indexOf(origin) < 0) {
       var msg =
         "The CORS policy for this site does not " +
         "allow access from the specified Origin.";
@@ -21,7 +21,11 @@ var corsOptions = {
   },
 };
 
-app.use(cors());
+var corsOptions2 = {
+  origin: allowedOrigins,
+};
+
+app.use(cors(corsOptions2));
 
 // parse requests of content-type: application/json
 app.use(bodyParser.json());
@@ -31,7 +35,10 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 // simple route
 app.get("/", (req, res) => {
-  res.json({ message: "Welcome to the Girls Who Code website backend! Last Updated: 10/22/2020 @ 6:25:45PMCST" });
+  res.json({
+    message:
+      "Welcome to the Girls Who Code website backend! Last Updated: 10/20/2020 @ 11:25:38PMCST",
+  });
 });
 
 require("./app/routes/event.routes.js")(app);
