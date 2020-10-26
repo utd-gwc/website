@@ -30,7 +30,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.get("/", (req, res) => {
   res.json({
     message:
-      "Welcome to the Girls Who Code website backend! Last Updated: 10/21/2020 @ 12:39:00AMCST",
+      "Welcome to the Girls Who Code website backend! Last Updated: 10/25/2020 @ 11:45:15PMCST",
   });
 });
 
