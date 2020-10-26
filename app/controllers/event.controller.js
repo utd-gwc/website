@@ -35,7 +35,9 @@ exports.findAll = (req, res) => {
     const title = req.query.title;
     var condition = title ? { title: {$regex: new RegExp(title), $options: "i"}} : {};
 
-    Event.find(condition)
+    const sortQuery = req.query.sort ? req.query.sort : {};
+
+    Event.find(condition).sort(sortQuery)
         .then(data => {
             res.send(data);
         })
