@@ -9,6 +9,9 @@ module.exports = app => {
     // Retrieve all Events
     router.get("/", events.findAll);
 
+    // Retrieve all Events happening after the current time and sort them by date ascending
+    router.get("/upcoming", events.findAllUpcoming);
+
     // Retieve a single Event with id
     router.get("/:id", events.findOne);
 
@@ -17,6 +20,7 @@ module.exports = app => {
 
     // Delete a Event with id
     router.delete("/:id", events.delete);
+
 
     app.use("/api/events", router)
 }

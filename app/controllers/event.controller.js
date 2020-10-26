@@ -4,7 +4,7 @@ const Event = db.events;
 // Create and save a new Event
 exports.create = (req, res) => {
     if (req.body.title == null || req.body.description == null) {
-        res.status(400).send({message: "Content can not be empty!"});
+        res.status(400).send({ message: "Content can not be empty!" });
         return;
     }
 
@@ -30,10 +30,26 @@ exports.create = (req, res) => {
         });
 };
 
+exports.findAllUpcoming = (req, res) => {
+    const actualDate = new Date();
+    const endOfDayDate = new Date(actualDate.getFullYear(), actualDate.getMonth(), actualDate.getDate(), 0, 0, 0);
+    const condition = { date: { $gte: endOfDayDate } };
+    const sortQuery = req.query.sort ? req.query.sort : {};
+    Event.find(condition).sort(sortQuery)
+        .then(data => {
+            res.send(data);
+        })
+        .catch(err => {
+            res.status(500).send({
+                message: err.message || "Some error occurred while retrieving events."
+            });
+        });
+}
+
 // Retrieve all Events from the database.
 exports.findAll = (req, res) => {
     const title = req.query.title;
-    var condition = title ? { title: {$regex: new RegExp(title), $options: "i"}} : {};
+    var condition = title ? { title: { $regex: new RegExp(title), $options: "i" } } : {};
 
     const sortQuery = req.query.sort ? req.query.sort : {};
 
@@ -54,20 +70,20 @@ exports.findOne = (req, res) => {
 
     Event.findById(id)
         .then(data => {
-            if(data == null) {
-                res.status(404).send({ message: "Not found Event with id " + id})
+            if (data == null) {
+                res.status(404).send({ message: "Not found Event with id " + id })
             } else {
                 res.send(data);
             }
         })
         .catch(err => {
-            res.status(500).send({message: "Error retrieving Event with id=" + id});
+            res.status(500).send({ message: "Error retrieving Event with id=" + id });
         });
 };
 
 // Update a Event by the id in the request
 exports.update = (req, res) => {
-    if(req.body == null) {
+    if (req.body == null) {
         return res.status(400).send({
             message: "Data to update can not be empty!"
         });
@@ -77,12 +93,12 @@ exports.update = (req, res) => {
 
     Event.findByIdAndUpdate(id, req.body)
         .then(data => {
-            if(data == null) {
+            if (data == null) {
                 res.status(404).send({
                     message: `Cannot update Event with id=${id}. Maybe Event was not found!`
                 });
             } else {
-                res.send({message: "Event was updated successfully."})
+                res.send({ message: "Event was updated successfully." })
             }
         })
         .catch(err => {
@@ -98,7 +114,7 @@ exports.delete = (req, res) => {
 
     Event.findByIdAndRemove(id)
         .then(data => {
-            if(data == null) {
+            if (data == null) {
                 res.status(404).send({
                     message: `Cannot delete Event with id=${id}. Maybe Event was not found!`
                 });
