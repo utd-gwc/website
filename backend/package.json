@@ -1,12 +1,11 @@
 {
   "name": "gwc_website",
   "version": "1.0.0",
-  "description": "the official backend website for UTD Girls Who Code",
-  "main": "backend/server.js",
+  "description": "the official website for UTD Girls Who Code",
+  "main": "server.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node backend/server.js",
-    "heroku-postbuild": "npm install && npm run build"
+    "start": "node server.js"
   },
   "keywords": [
     "nodejs",
