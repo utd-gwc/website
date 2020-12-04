@@ -1,6 +1,8 @@
 const express = require("express");
 const bodyParser = require("body-parser");
 const cors = require("cors");
+const path = require('path')
+
 require("dotenv").config();
 
 const app = express();
@@ -27,12 +29,17 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
 // simple route
-app.get("/", (req, res) => {
-  res.json({
-    message:
-      "Welcome to the Girls Who Code website backend! Last Updated: 10/25/2020 @ 11:45:15PMCST",
-  });
-});
+// app.get("/", (req, res) => {
+//   res.json({
+//     message:
+//       "Welcome to the Girls Who Code website backend! Last Updated: 10/25/2020 @ 11:45:15PMCST",
+//   });
+// });
+
+app.use(express.static(path.join(__dirname, '../admin-panel/build')))
+app.get('*', (req, res) => {
+    res.sendFile(path.join(__dirname, '../admin-panel/build'))
+})
 
 require("./app/routes/event.routes.js")(app);
 require("./app/routes/officer.routes.js")(app);
