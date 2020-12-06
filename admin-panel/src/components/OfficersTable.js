@@ -8,7 +8,7 @@ import Zoom from 'react-medium-image-zoom'
 import 'react-medium-image-zoom/dist/styles.css'
 
 
-export default function OfficersTable({ data }) {
+export default function OfficersTable({ data, triggerOfficerModal, triggerDeleteOfficerModal }) {
 
     const columns = useMemo(
         () => [
@@ -39,7 +39,7 @@ export default function OfficersTable({ data }) {
                 Header: 'PFP',
                 accessor: 'profilePhotoUrl',
                 Cell: ({ value }) => {
-                    if (value != null) {
+                    if (value != null && value !== "") {
                         return (
                             <div>
                                 <Zoom>
@@ -145,10 +145,10 @@ export default function OfficersTable({ data }) {
                                 )
                             })}
                             <td style={{ align: 'center' }}>
-                                <Button variant='outline-primary' style={{ width: 100, marginBottom: 15 }}>
+                                <Button variant='outline-primary' style={{ width: 100, marginBottom: 15 }} onClick={() => {triggerOfficerModal('EDIT', row.cells[0].value)}}>
                                     Edit
                                 </Button>
-                                <Button variant="outline-danger" style={{ width: 100 }}>
+                                <Button variant="outline-danger" style={{ width: 100 }} onClick={() => {triggerDeleteOfficerModal(row.cells[0].value, row.cells[1].value)}}>
                                     Delete
                                 </Button>
                             </td>

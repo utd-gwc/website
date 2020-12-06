@@ -10,14 +10,15 @@ export default function EventsPage() {
     const [showDeleteModal, setShowDeleteModal] = useState(false);
     const [deleteModalInfo, setDeleteModalInfo] = useState(null);
     const [modalType, setModalType] = useState('ADD');
-    const [modalID, setModalID] = useState(null)
-    const [events, setEvents] = useState(null)
+    const [modalID, setModalID] = useState(null);
+    const [events, setEvents] = useState(null);
+    const [showRawData, setShowRawData] = useState(false);
 
     function triggerEventModal(type, id) {
         setModalType(type);
-        if(type === 'ADD' && modalID != null) {
+        if (type === 'ADD' && modalID != null) {
             setModalID(null);
-        } else if(type !== 'ADD') {
+        } else if (type !== 'ADD') {
             setModalID(id)
         }
         setShowModal(true);
@@ -25,7 +26,7 @@ export default function EventsPage() {
 
     function triggerDeleteEventModal(id, name, oldEvent) {
         // setModalID(id)
-        setDeleteModalInfo({id, name, oldEvent})
+        setDeleteModalInfo({ id, name, oldEvent })
         setShowDeleteModal(true);
     }
 
@@ -38,18 +39,26 @@ export default function EventsPage() {
 
     return (
         <div>
-            <div style={{ float: 'right', padding: 20}}>
+            <div style={{ float: 'right', padding: 20 }}>
+                <Button variant="secondary" onClick={() => { setShowRawData(!showRawData) }} style={{ marginRight: 20 }}>
+                    {showRawData ? 'View Table' : 'View Raw'}
+                </Button>
                 <Button variant="success" onClick={() => triggerEventModal('ADD', null)}>
                     Add
                 </Button>
             </div>
             {events === null ? (
                 <p>Loading...</p>
-            ) : (
-                    <EventsTable data={events} triggerEventModal={triggerEventModal} triggerDeleteEventModal={triggerDeleteEventModal}/>
-            )}
-            <EventsModal show={showModal} setShow={setShowModal} type={modalType} id={modalID}/>
-            <DeleteEventModal show={showDeleteModal} setShow={setShowDeleteModal} eventInfo={deleteModalInfo}/>
+            ) : showRawData ?
+                    (
+                        <div><pre>{JSON.stringify(events, null, 2)}</pre></div>
+                    ) :
+                    (
+                        <EventsTable data={events} triggerEventModal={triggerEventModal} triggerDeleteEventModal={triggerDeleteEventModal} />
+                    )
+            }
+            <EventsModal show={showModal} setShow={setShowModal} type={modalType} id={modalID} />
+            <DeleteEventModal show={showDeleteModal} setShow={setShowDeleteModal} eventInfo={deleteModalInfo} />
         </div>
     )
 }

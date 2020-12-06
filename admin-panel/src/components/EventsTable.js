@@ -40,7 +40,7 @@ export default function EventsTable({ data, triggerEventModal, triggerDeleteEven
                 Header: 'FlyerUrl',
                 accessor: 'flyerUrl',
                 Cell: ({ value }) => {
-                    if (value != null) {
+                    if (value != null && value !== "") {
                         return (
                             <div>
                                 <Zoom>
