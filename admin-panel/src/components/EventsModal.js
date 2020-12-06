@@ -76,8 +76,9 @@ export default function EventsModal({ show, setShow, type, id }) {
                         setEachEntry(initialInputState)
                         handleClose()
                     })
-                    .catch(() => {
+                    .catch((err) => {
                         setValidated(true)
+                        console.log(err)
                         alert('Error posting')
                     })
             } else if(type === 'EDIT') {
@@ -89,8 +90,9 @@ export default function EventsModal({ show, setShow, type, id }) {
                         setEachEntry(initialInputState)
                         handleClose()
                     })
-                    .catch(() => {
+                    .catch((err) => {
                         setValidated(true)
+                        console.log(err)
                         alert('Error updating!')
                     })
             }
@@ -99,7 +101,7 @@ export default function EventsModal({ show, setShow, type, id }) {
     }
 
     console.log(eachEntry);
-    console.log(validImage);
+    // console.log(validImage);
 
     return (
         <Modal show={show} onHide={handleClose}>
