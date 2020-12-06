@@ -69,7 +69,7 @@ export default function EventsModal({ show, setShow, type, id }) {
         } else {
             if(type === 'ADD') {
                 axios
-                    .post('/api/events', eachEntry)
+                    .post('https://utd-gwc-api.herokuapp.com/api/events', eachEntry)
                     .then(() => alert('Success!'))
                     .then(() => {
                         setValidated(false)
@@ -82,7 +82,7 @@ export default function EventsModal({ show, setShow, type, id }) {
                     })
             } else if(type === 'EDIT') {
                 axios
-                    .put('/api/events/'+id, eachEntry)
+                    .put('https://utd-gwc-api.herokuapp.com/api/events/'+id, eachEntry)
                     .then(() => {alert('Success!')})
                     .then(() => {
                         setValidated(false)

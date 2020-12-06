@@ -16,7 +16,7 @@ export default function DeleteEventModal({ show, setShow, eventInfo }) {
     const handleDelete = () => {
         if (id != null) {
             axios
-                .delete('/api/events/' + id)
+                .delete('https://utd-gwc-api.herokuapp.com/api/events/' + id)
                 .then(() => {
                     alert('Event ' + name + ' deleted successfully')
                     handleClose()
