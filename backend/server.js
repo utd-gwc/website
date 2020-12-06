@@ -7,21 +7,21 @@ require("dotenv").config();
 
 const app = express();
 
-const allowedOrigins = ["http://localhost:8081", "https://utd-gwc.github.io", "https://utd-gwc-api.herokuapp.com/"];
-var corsOptions = {
-  origin: function (origin, callback) {
-    if (origin == null) {
-      callback(null, true);
-    } else if (allowedOrigins.indexOf(origin) !== -1) {
-      callback(null, true);
-    } else {
-      callback(new Error("Not allowed by CORS"));
-    }
-  },
-};
+// const allowedOrigins = ["http://localhost:8081", "https://utd-gwc.github.io", "https://utd-gwc-api.herokuapp.com/"];
+// var corsOptions = {
+//   origin: function (origin, callback) {
+//     if (origin == null) {
+//       callback(null, true);
+//     } else if (allowedOrigins.indexOf(origin) !== -1) {
+//       callback(null, true);
+//     } else {
+//       callback(new Error("Not allowed by CORS"));
+//     }
+//   },
+// };
 
-app.use(cors(corsOptions));
-// app.use(cors())
+// app.use(cors(corsOptions));
+app.use(cors())
 // parse requests of content-type: application/json
 app.use(bodyParser.json());
 
