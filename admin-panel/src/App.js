@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React from 'react'
 import EventsPage from './components/EventsPage';
 import OfficersPage from './components/OfficersPage';
 import { Tabs, Tab } from 'react-bootstrap'

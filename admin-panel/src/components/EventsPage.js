@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react'
-import axios from 'axios';
 import EventsTable from './EventsTable';
 import EventsModal from './EventsModal';
 import DeleteEventModal from './DeleteEventModal';
@@ -31,9 +30,9 @@ export default function EventsPage() {
     }
 
     useEffect(() => {
-        axios
-            .get("/api/events")
-            .then((events) => setEvents(events.data))
+        fetch("https://utd-gwc-api.herokuapp.com/api/events/")
+            .then(res => res.json())
+            .then((events) => setEvents(events))
             .catch((err) => console.log(err));
     }, []);
 

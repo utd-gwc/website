@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react'
 import { Modal, Button, Form} from 'react-bootstrap'
 import DateTimePicker from 'react-datetime-picker';
 import isImageUrl from 'is-image-url'
-import axios from 'axios'
 
 function validateInput(eachEntry) {
     if(eachEntry.title == null || eachEntry.title === '') {
@@ -32,10 +31,15 @@ export default function EventsModal({ show, setShow, type, id }) {
 
     useEffect(() => {
         if(type === 'EDIT' && id != null) {
-            axios
-                .get("/api/events/"+id)
-                .then((events) => {
-                    setEachEntry(events.data)
+            fetch("https://utd-gwc-api.herokuapp.com/api/events/"+id)
+                .then(res => res.json())
+                .then((event) => {
+                    setEachEntry({
+                        title: event.title,
+                        description: event.description,
+                        date: new Date(event.date),
+                        flyerUrl: event.flyerUrl,
+                    })
                 })
                 .catch((err) => console.log(err));
         }
@@ -68,33 +72,43 @@ export default function EventsModal({ show, setShow, type, id }) {
             setValidated(true)
         } else {
             if(type === 'ADD') {
-                axios
-                    .post('https://utd-gwc-api.herokuapp.com/api/events', eachEntry)
-                    .then(() => alert('Success!'))
-                    .then(() => {
-                        setValidated(false)
-                        setEachEntry(initialInputState)
-                        handleClose()
-                    })
-                    .catch((err) => {
-                        setValidated(true)
-                        console.log(err)
-                        alert('Error posting')
-                    })
+                fetch('https://utd-gwc-api.herokuapp.com/api/events', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(eachEntry)
+                })
+                .then(() => alert('Success!'))
+                .then(() => {
+                    setValidated(false)
+                    setEachEntry(initialInputState)
+                    handleClose()
+                })
+                .catch((err) => {
+                    setValidated(true)
+                    console.log(err)
+                    alert('Error posting')
+                })
             } else if(type === 'EDIT') {
-                axios
-                    .put('https://utd-gwc-api.herokuapp.com/api/events/'+id, eachEntry)
-                    .then(() => {alert('Success!')})
-                    .then(() => {
-                        setValidated(false)
-                        setEachEntry(initialInputState)
-                        handleClose()
-                    })
-                    .catch((err) => {
-                        setValidated(true)
-                        console.log(err)
-                        alert('Error updating!')
-                    })
+                fetch('https://utd-gwc-api.herokuapp.com/api/events/'+id, {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(eachEntry)
+                })
+                .then(() => {alert('Success!')})
+                .then(() => {
+                    setValidated(false)
+                    setEachEntry(initialInputState)
+                    handleClose()
+                })
+                .catch((err) => {
+                    setValidated(true)
+                    console.log(err)
+                    alert('Error updating!')
+                })
             }
         }
         // handleClose()

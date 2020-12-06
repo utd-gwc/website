@@ -1,5 +1,5 @@
 
-import React, { useState, useEffect, useMemo } from 'react'
+import React, { useMemo } from 'react'
 import { useTable, useSortBy } from 'react-table'
 import 'bootstrap/dist/css/bootstrap.min.css';
 import BTable from 'react-bootstrap/Table';
@@ -43,7 +43,7 @@ export default function OfficersTable({ data }) {
                         return (
                             <div>
                                 <Zoom>
-                                    <img src={value} style={{ maxWidth: 200 }} />
+                                    <img alt="GWC Officer photo" src={value} style={{ maxWidth: 200 }} />
                                 </Zoom>
                                 <a href={value} target="_blank" rel="noreferrer">
                                     {value}

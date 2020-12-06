@@ -44,9 +44,9 @@ export default function EventsTable({ data, triggerEventModal, triggerDeleteEven
                         return (
                             <div>
                                 <Zoom>
-                                    <img src={value} style={{ maxWidth: 200 }} />
+                                    <img alt="Flyer for GWC event" src={value} style={{ maxWidth: 200 }} />
                                 </Zoom>
-                                <a href={value} target="_blank" referrer="noreferrer">
+                                <a href={value} target="_blank" rel="noreferrer">
                                 {value}
                                 </a>
                             </div>

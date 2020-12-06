@@ -1,6 +1,5 @@
 import React from 'react'
 import { Modal, Button } from 'react-bootstrap'
-import axios from 'axios'
 
 
 export default function DeleteEventModal({ show, setShow, eventInfo }) {
@@ -15,13 +14,14 @@ export default function DeleteEventModal({ show, setShow, eventInfo }) {
 
     const handleDelete = () => {
         if (id != null) {
-            axios
-                .delete('https://utd-gwc-api.herokuapp.com/api/events/' + id)
-                .then(() => {
-                    alert('Event ' + name + ' deleted successfully')
-                    handleClose()
-                })
-                .catch(() => alert('Failed to delete event'))
+            fetch('https://utd-gwc-api.herokuapp.com/api/events/' + id, {
+                method: 'DELETE'
+            })
+            .then(() => {
+                alert('Event ' + name + ' deleted successfully')
+                handleClose()
+            })
+            .catch(() => alert('Failed to delete event'))
         }
     }
 
