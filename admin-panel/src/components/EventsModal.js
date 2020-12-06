@@ -1,14 +1,14 @@
 import React, { useState, useEffect } from 'react'
-import { Modal, Button, Form} from 'react-bootstrap'
+import { Modal, Button, Form, ResponsiveEmbed } from 'react-bootstrap'
 import DateTimePicker from 'react-datetime-picker';
 import isImageUrl from 'is-image-url'
 
 function validateInput(eachEntry) {
-    if(eachEntry.title == null || eachEntry.title === '') {
+    if (eachEntry.title == null || eachEntry.title === '') {
         return false;
-    } else if(eachEntry.description == null || eachEntry.description === '') {
+    } else if (eachEntry.description == null || eachEntry.description === '') {
         return false;
-    } else if(eachEntry.date == null) {
+    } else if (eachEntry.date == null) {
         return false;
     } else {
         return true;
@@ -30,8 +30,8 @@ export default function EventsModal({ show, setShow, type, id }) {
 
 
     useEffect(() => {
-        if(type === 'EDIT' && id != null) {
-            fetch("https://utd-gwc-api.herokuapp.com/api/events/"+id)
+        if (type === 'EDIT' && id != null) {
+            fetch("https://utd-gwc-api.herokuapp.com/api/events/" + id)
                 .then(res => res.json())
                 .then((event) => {
                     setEachEntry({
@@ -47,19 +47,19 @@ export default function EventsModal({ show, setShow, type, id }) {
 
     const { title, description, date, flyerUrl } = eachEntry
 
-    
+
 
     const handleInputChange = e => {
         setEachEntry({ ...eachEntry, [e.target.name]: e.target.value });
     }
     const handleDateChange = value => {
-        setEachEntry({...eachEntry, date: value})
+        setEachEntry({ ...eachEntry, date: value })
     }
 
     const handleClose = () => setShow(false);
 
     const handleFinalSubmit = e => {
-        if(flyerUrl !== '') {
+        if (flyerUrl !== '') {
             setValidImage(isImageUrl(flyerUrl))
         } else {
             setValidImage(true)
@@ -67,11 +67,11 @@ export default function EventsModal({ show, setShow, type, id }) {
         const valid = validateInput(eachEntry) && validImage;
 
 
-        if(!valid) {
+        if (!valid) {
             alert('Make sure all required fields are filled.')
             setValidated(true)
         } else {
-            if(type === 'ADD') {
+            if (type === 'ADD') {
                 fetch('https://utd-gwc-api.herokuapp.com/api/events', {
                     method: 'POST',
                     headers: {
@@ -79,36 +79,50 @@ export default function EventsModal({ show, setShow, type, id }) {
                     },
                     body: JSON.stringify(eachEntry)
                 })
-                .then(() => alert('Success!'))
-                .then(() => {
-                    setValidated(false)
-                    setEachEntry(initialInputState)
-                    handleClose()
-                })
-                .catch((err) => {
-                    setValidated(true)
-                    console.log(err)
-                    alert('Error posting')
-                })
-            } else if(type === 'EDIT') {
-                fetch('https://utd-gwc-api.herokuapp.com/api/events/'+id, {
+                    .then(res => res.json())
+                    .then((res) => {
+                        if (!res._id) {
+                            setValidated(true)
+                            console.log(res)
+                            alert('Error posting')
+                        } else {
+                            alert('Success!')
+                            setValidated(false)
+                            setEachEntry(initialInputState)
+                            handleClose()
+                        }
+                    })
+                    .catch((err) => {
+                        setValidated(true)
+                        console.log(err)
+                        alert('Error posting')
+                    })
+            } else if (type === 'EDIT') {
+                fetch('https://utd-gwc-api.herokuapp.com/api/events/' + id, {
                     method: 'PUT',
                     headers: {
                         'Content-Type': 'application/json'
                     },
                     body: JSON.stringify(eachEntry)
                 })
-                .then(() => {alert('Success!')})
-                .then(() => {
-                    setValidated(false)
-                    setEachEntry(initialInputState)
-                    handleClose()
-                })
-                .catch((err) => {
-                    setValidated(true)
-                    console.log(err)
-                    alert('Error updating!')
-                })
+                    .then(res => res.json())
+                    .then((res) => {
+                        if (!res.message) {
+                            setValidated(true)
+                            console.log(res)
+                            alert('Error updating!')
+                        } else {
+                            alert('Success!')
+                            setValidated(false)
+                            setEachEntry(initialInputState)
+                            handleClose()
+                        }
+                    })
+                    .catch((err) => {
+                        setValidated(true)
+                        console.log(err)
+                        alert('Error updating!')
+                    })
             }
         }
         // handleClose()
@@ -137,7 +151,7 @@ export default function EventsModal({ show, setShow, type, id }) {
                         <Form.Control name="flyerUrl" placeholder="Ex: https://imageUrl.com" onChange={handleInputChange} value={flyerUrl} />
                     </Form.Group>
                     <Form.Group>
-                        <Form.Label htmlFor="date">Date</Form.Label><br/>
+                        <Form.Label htmlFor="date">Date</Form.Label><br />
                         <DateTimePicker required name="date" id="datetimepicker" value={date} onChange={handleDateChange} />
                     </Form.Group>
                 </Form>

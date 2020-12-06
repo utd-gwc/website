@@ -17,11 +17,20 @@ export default function DeleteEventModal({ show, setShow, eventInfo }) {
             fetch('https://utd-gwc-api.herokuapp.com/api/events/' + id, {
                 method: 'DELETE'
             })
-            .then(() => {
-                alert('Event ' + name + ' deleted successfully')
-                handleClose()
-            })
-            .catch(() => alert('Failed to delete event'))
+                .then(res => res.json())
+                .then((res) => {
+                    if (!res.message) {
+                        console.log(res)
+                        alert('Error Deleting!')
+                    } else {
+                        alert('Success!')
+                        handleClose()
+                    }
+                })
+                .catch((err) => {
+                    console.log(err)
+                    alert('Error Deleting!')
+                })
         }
     }
 
@@ -35,8 +44,8 @@ export default function DeleteEventModal({ show, setShow, eventInfo }) {
                 {oldEvent ? (
                     <p>This is an old event and is safe to delete</p>
                 ) : (
-                    <p>This event has not yet happened! Double check you want to delete it.</p>
-                )}
+                        <p>This event has not yet happened! Double check you want to delete it.</p>
+                    )}
             </Modal.Body>
             <Modal.Footer>
                 <Button variant="secondary" onClick={handleClose}>
