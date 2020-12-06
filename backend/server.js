@@ -7,7 +7,7 @@ require("dotenv").config();
 
 const app = express();
 
-const allowedOrigins = ["http://localhost:8081", "https://utd-gwc.github.io"];
+const allowedOrigins = ["http://localhost:8081", "https://utd-gwc.github.io", "https://utd-gwc-api.herokuapp.com/"];
 var corsOptions = {
   origin: function (origin, callback) {
     if (origin == null) {

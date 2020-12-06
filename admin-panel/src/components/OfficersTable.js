@@ -43,7 +43,7 @@ export default function OfficersTable({ data }) {
                         return (
                             <div>
                                 <Zoom>
-                                    <img alt="GWC Officer photo" src={value} style={{ maxWidth: 200 }} />
+                                    <img alt="GWC Officer headshot" src={value} style={{ maxWidth: 200 }} />
                                 </Zoom>
                                 <a href={value} target="_blank" rel="noreferrer">
                                     {value}
