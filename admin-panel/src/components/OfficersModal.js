@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useMemo } from 'react'
-import { Modal, Button, Form } from 'react-bootstrap'
+import { Modal, Button, Form, Row, Col } from 'react-bootstrap'
 import isImageUrl from 'is-image-url'
 
 function validURL(str) {
@@ -17,14 +17,10 @@ function validateInput(eachEntry) {
     if (eachEntry.name === null || eachEntry.name === '') {
         return false;
     } else if (eachEntry.profilePhotoUrl === null || eachEntry.profilePhotoUrl === '' || (!validURL(eachEntry.profilePhotoUrl) && !isImageUrl(eachEntry.profilePhotoUrl))) {
-        console.log(eachEntry.profilePhotoUrl === null || eachEntry.profilePhotoUrl === '' || (!validURL(eachEntry.profilePhotoUrl) && !isImageUrl(eachEntry.profilePhotoUrl)))
-        console.log(eachEntry.profilePhotoUrl === null)
-        console.log(eachEntry.profilePhotoUrl === '')
-        console.log(!validURL(eachEntry.profilePhotoUrl) && !isImageUrl(eachEntry.profilePhotoUrl))
-        console.log(!validURL(eachEntry.profilePhotoUrl));
-        console.log(!isImageUrl(eachEntry.profilePhotoUrl));
         return false;
     } else if (eachEntry.position === null || eachEntry.position === '') {
+        return false;
+    } else if (!Object.values(eachEntry.externalLinks).every(x => (x != null && x !== '' && validURL(x)))) {
         return false;
     } else {
         return true;
@@ -32,6 +28,7 @@ function validateInput(eachEntry) {
 }
 
 export default function OfficersModal({ show, setShow, type, id }) {
+    const externalSites = ['INSTAGRAM', 'LINKEDIN', 'GITHUB', 'WEBSITE']
 
     const initialInputState = useMemo(() => {
         return {
@@ -45,6 +42,7 @@ export default function OfficersModal({ show, setShow, type, id }) {
 
     const [eachEntry, setEachEntry] = useState(initialInputState);
     const [validated, setValidated] = useState(false);
+    const [selectedSite, setSelectedSite] = useState('')
 
     useEffect(() => {
         if (type === 'EDIT' && id !== null) {
@@ -57,13 +55,41 @@ export default function OfficersModal({ show, setShow, type, id }) {
         }
     }, [type, id, initialInputState])
 
-    const { name, bio, position, profilePhotoUrl } = eachEntry
+    const { name, bio, position, profilePhotoUrl, externalLinks } = eachEntry
 
     const handleInputChange = e => {
         setEachEntry({ ...eachEntry, [e.target.name]: e.target.value });
     }
 
+    const handleLinkInputChange = (e) => {
+        setEachEntry({
+            ...eachEntry, externalLinks: {
+                ...eachEntry.externalLinks,
+                [e.target.name]: e.target.value
+            }
+        })
+    }
+
+    const handleAddLinkField = (site) => {
+        setSelectedSite("")
+        setEachEntry({
+            ...eachEntry, externalLinks: {
+                ...eachEntry.externalLinks,
+                [site]: "",
+            }
+        })
+    }
+
+    const handleRemoveLinkField = (site) => {
+        setSelectedSite("")
+        const tempExternalLinks = eachEntry.externalLinks
+        delete tempExternalLinks[site]
+        setEachEntry({ ...eachEntry, externalLinks: tempExternalLinks })
+    }
+
     const handleClose = () => {
+        // setEachEntry(initialInputState)
+        setSelectedSite("")
         setValidated(false)
         setShow(false)
     };
@@ -152,6 +178,57 @@ export default function OfficersModal({ show, setShow, type, id }) {
                     <Form.Group>
                         <Form.Label htmlFor="profilePhoto">Photo URL</Form.Label>
                         <Form.Control required isValid={validURL(profilePhotoUrl) || isImageUrl(profilePhotoUrl)} name="profilePhotoUrl" placeholder="Ex: https://imageUrl.com/headshot.jpg" onChange={handleInputChange} value={profilePhotoUrl} />
+                    </Form.Group>
+                    <Form.Group>
+                        <Form.Label htmlFor="addExternalLink">Add Links</Form.Label>
+                        {externalLinks != null && Object.keys(externalLinks).map((key, index) => {
+                            return (
+                                <Row key={index} style={{ paddingBottom: 10 }}>
+                                    <Col sm={8}>
+                                        <Form.Control
+                                            isValid={validURL(externalLinks[key])}
+                                            key={key}
+                                            required
+                                            name={key}
+                                            value={externalLinks[key]}
+                                            placeholder={"enter " + key.toString().toLowerCase() + " link..."}
+                                            onChange={handleLinkInputChange} />
+                                    </Col>
+                                    <Col>
+                                        <Button variant="danger" onClick={() => { handleRemoveLinkField(key) }}>-</Button>
+                                    </Col>
+                                </Row>
+                            )
+                        })}
+                        <Row>
+                            <Col sm={8}>
+                                <Form.Control
+                                    disabled={Object.keys(externalLinks).length === externalSites.length}
+                                    defaultValue=""
+                                    as="select"
+                                    onClick={(e) => { setSelectedSite(e.target.value) }}
+                                    onChange={(e) => { setSelectedSite(e.target.value) }}>
+                                    <option disabled value=''>Select an external link to add..</option>
+                                    {externalSites.map((value) => {
+                                        const keys = Object.keys(externalLinks)
+                                        const index = keys.indexOf(value)
+                                        if (index > -1) {
+                                            return null
+                                        }
+                                        return (
+                                            <option key={value} value={value}>{value}</option>
+                                        )
+                                    })}
+                                </Form.Control>
+                            </Col>
+                            <Col>
+                                <Button
+                                    variant="success"
+                                    disabled={selectedSite === "" || externalLinks.selectedSite != null}
+                                    onClick={() => { handleAddLinkField(selectedSite) }}
+                                >+</Button>
+                            </Col>
+                        </Row>
                     </Form.Group>
                 </Form>
             </Modal.Body>

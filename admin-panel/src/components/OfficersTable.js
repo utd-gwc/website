@@ -63,34 +63,15 @@ export default function OfficersTable({ data, triggerOfficerModal, triggerDelete
                     if (externalLinks != null) {
                         return (
                             <ul>
-                                {externalLinks['GITHUB'] != null &&
-                                    <li>
-                                        <a href={externalLinks['GITHUB']} target="_blank" rel="noreferrer" >
-                                            {externalLinks['GITHUB']}
-                                        </a>
-                                    </li>
-                                }
-                                {externalLinks['LINKEDIN'] != null &&
-                                    <li>
-                                        <a href={externalLinks['LINKEDIN']} target="_blank" rel="noreferrer">
-                                            {externalLinks['LINKEDIN']}
-                                        </a>
-                                    </li>
-                                }
-                                {externalLinks['INSTAGRAM'] != null &&
-                                    <li>
-                                        <a href={externalLinks['INSTAGRAM']} target="_blank" rel="noreferrer">
-                                            {externalLinks['INSTAGRAM']}
-                                        </a>
-                                    </li>
-                                }
-                                {externalLinks['WEBSITE'] != null &&
-                                    <li>
-                                        <a href={externalLinks['WEBSITE']} target="_blank" rel="noreferrer">
-                                            {externalLinks['WEBSITE']}
-                                        </a>
-                                    </li>
-                                }
+                                {Object.keys(externalLinks).map((key, index) => {
+                                    return (
+                                        <li key={index}>
+                                            <a href={externalLinks[key]} target="_blank" rel="noreferrer" >
+                                                {externalLinks[key]}
+                                            </a>
+                                        </li>
+                                    )
+                                })}
                             </ul>
                         )
                     } else {
@@ -145,10 +126,10 @@ export default function OfficersTable({ data, triggerOfficerModal, triggerDelete
                                 )
                             })}
                             <td style={{ align: 'center' }}>
-                                <Button variant='outline-primary' style={{ width: 100, marginBottom: 15 }} onClick={() => {triggerOfficerModal('EDIT', row.cells[0].value)}}>
+                                <Button variant='outline-primary' style={{ width: 100, marginBottom: 15 }} onClick={() => { triggerOfficerModal('EDIT', row.cells[0].value) }}>
                                     Edit
                                 </Button>
-                                <Button variant="outline-danger" style={{ width: 100 }} onClick={() => {triggerDeleteOfficerModal(row.cells[0].value, row.cells[1].value)}}>
+                                <Button variant="outline-danger" style={{ width: 100 }} onClick={() => { triggerDeleteOfficerModal(row.cells[0].value, row.cells[1].value) }}>
                                     Delete
                                 </Button>
                             </td>
