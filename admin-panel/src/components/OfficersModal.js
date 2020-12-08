@@ -17,7 +17,7 @@ function validateInput(eachEntry) {
         return false
     } else if (eachEntry.name === null || eachEntry.name === '') {
         return false;
-    } else if (eachEntry.profilePhotoUrl === null || eachEntry.profilePhotoUrl === '' || (!validURL(eachEntry.profilePhotoUrl) && !isImageUrl(eachEntry.profilePhotoUrl))) {
+    } else if (eachEntry.profilePhotoUrl !== null && eachEntry.profilePhotoUrl !== '' && (!validURL(eachEntry.profilePhotoUrl) && !isImageUrl(eachEntry.profilePhotoUrl))) {
         return false;
     } else if (eachEntry.position === null || eachEntry.position === '') {
         return false;
@@ -35,7 +35,7 @@ export default function OfficersModal({ show, setShow, type, id, refetchData }) 
         return {
             name: "",
             bio: "",
-            profilePhotoUrl: "",
+            profilePhotoUrl: null,
             position: "",
             externalLinks: {},
             order: 0,
