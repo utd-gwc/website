@@ -37,7 +37,9 @@ exports.findAll = (req, res) => {
     const name = req.query.name;
     var condition = name ? { name: {$regex: new RegExp(name), $options: "i"}} : {};
 
-    Officer.find(condition)
+    const sortQuery = req.query.sort ? req.query.sort : {};
+
+    Officer.find(condition).sort(sortQuery)
         .then(data => {
             res.send(data);
         })
