@@ -13,7 +13,7 @@ exports.create = (req, res) => {
         name: req.body.name,
         position: req.body.position,
         bio: req.body.bio,
-        flyerUrl: req.body.flyerUrl,
+        profilePhotoUrl: req.body.profilePhotoUrl,
         externalLinks: req.body.externalLinks,
     });
 
