@@ -14,6 +14,9 @@ export default function OfficersPage() {
     const [modalID, setModalID] = useState(null);
     const [showRawData, setShowRawData] = useState(false);
 
+    const [refetch, setRefetch] = useState(false);
+    const [fetching, setFetching] = useState(false);
+
     function triggerOfficerModal(type, id) {
         setModalType(type);
         if (type === 'ADD' && modalID != null) {
@@ -30,12 +33,18 @@ export default function OfficersPage() {
         setShowDeleteModal(true);
     }
 
+    const toggleRefetch = () => {
+        setRefetch(!refetch)
+    }
+
     useEffect(() => {
+        setFetching(true);
         fetch("https://utd-gwc-api.herokuapp.com/api/officers")
             .then(res => res.json())
             .then((officers) => setOfficers(officers))
-            .catch((err) => console.log(err));
-    }, []);
+            .then(() => setFetching(false))
+            .catch((err) => { console.log(err); setFetching(false) });
+    }, [refetch]);
 
     return (
         <div style={{}}>
@@ -47,9 +56,11 @@ export default function OfficersPage() {
                     Add
                 </Button>
             </div>
-            {officers === null ? (
+            {officers === null ? fetching ? (
                 <p>Loading...</p>
-            ) : showRawData ?
+            ) : (
+                    <p>Error fetching data try reloading.</p>
+                ) : showRawData ?
                     (
                         <div><pre>{JSON.stringify(officers, null, 2)}</pre></div>
                     ) :
@@ -57,8 +68,8 @@ export default function OfficersPage() {
                         <OfficersTable data={officers} triggerOfficerModal={triggerOfficerModal} triggerDeleteOfficerModal={triggerDeleteOfficerModal} />
                     )
             }
-            <OfficersModal show={showModal} setShow={setShowModal} type={modalType} id={modalID} />
-            <DeleteOfficerModal show={showDeleteModal} setShow={setShowDeleteModal} officerID={deleteModalInfo.id} officerName={deleteModalInfo.name} />
+            <OfficersModal show={showModal} setShow={setShowModal} type={modalType} id={modalID} refetchData={toggleRefetch}/>
+            <DeleteOfficerModal show={showDeleteModal} setShow={setShowDeleteModal} officerID={deleteModalInfo.id} officerName={deleteModalInfo.name} refetchData={toggleRefetch} />
         </div>
     )
 }

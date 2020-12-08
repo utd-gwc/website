@@ -2,7 +2,7 @@ import React from 'react'
 import { Modal, Button } from 'react-bootstrap'
 
 
-export default function DeleteEventModal({ show, setShow, officerID, officerName }) {
+export default function DeleteEventModal({ show, setShow, officerID, officerName, refetchData }) {
 
 
     const handleClose = () => setShow(false);
@@ -19,6 +19,7 @@ export default function DeleteEventModal({ show, setShow, officerID, officerName
                         alert('Error Deleting!')
                     } else {
                         alert('Success!')
+                        refetchData()
                         handleClose()
                     }
                 })

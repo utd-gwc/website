@@ -24,6 +24,10 @@ export default function OfficersTable({ data, triggerOfficerModal, triggerDelete
                 }
             },
             {
+                Header: 'Order',
+                accessor: 'order',
+            },
+            {
                 Header: 'Name',
                 accessor: 'name',
             },
@@ -88,7 +92,16 @@ export default function OfficersTable({ data, triggerOfficerModal, triggerDelete
         headerGroups,
         rows,
         prepareRow,
-    } = useTable({ columns, data, }, useSortBy)
+    } = useTable({
+        columns, data, initialState: {
+            sortBy: [
+                {
+                    id: 'order',
+                    desc: false
+                }
+            ]
+        }
+    }, useSortBy)
 
     return (
         <BTable striped bordered hover {...getTableProps()} >

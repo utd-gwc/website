@@ -13,8 +13,9 @@ function validURL(str) {
 }
 
 function validateInput(eachEntry) {
-    console.log(eachEntry)
-    if (eachEntry.name === null || eachEntry.name === '') {
+    if(eachEntry.order == null || eachEntry.order < 0) {
+        return false
+    } else if (eachEntry.name === null || eachEntry.name === '') {
         return false;
     } else if (eachEntry.profilePhotoUrl === null || eachEntry.profilePhotoUrl === '' || (!validURL(eachEntry.profilePhotoUrl) && !isImageUrl(eachEntry.profilePhotoUrl))) {
         return false;
@@ -27,7 +28,7 @@ function validateInput(eachEntry) {
     }
 }
 
-export default function OfficersModal({ show, setShow, type, id }) {
+export default function OfficersModal({ show, setShow, type, id, refetchData }) {
     const externalSites = ['INSTAGRAM', 'LINKEDIN', 'GITHUB', 'WEBSITE']
 
     const initialInputState = useMemo(() => {
@@ -37,6 +38,7 @@ export default function OfficersModal({ show, setShow, type, id }) {
             profilePhotoUrl: "",
             position: "",
             externalLinks: {},
+            order: 0,
         }
     }, [])
 
@@ -55,7 +57,7 @@ export default function OfficersModal({ show, setShow, type, id }) {
         }
     }, [type, id, initialInputState])
 
-    const { name, bio, position, profilePhotoUrl, externalLinks } = eachEntry
+    const { order, name, bio, position, profilePhotoUrl, externalLinks } = eachEntry
 
     const handleInputChange = e => {
         setEachEntry({ ...eachEntry, [e.target.name]: e.target.value });
@@ -117,6 +119,7 @@ export default function OfficersModal({ show, setShow, type, id }) {
                             alert('Error posting')
                         } else {
                             alert('Success!')
+                            refetchData()
                             setEachEntry(initialInputState)
                             handleClose()
                         }
@@ -142,6 +145,7 @@ export default function OfficersModal({ show, setShow, type, id }) {
                             alert('Error updating!')
                         } else {
                             alert('Success!')
+                            refetchData()
                             setValidated(false)
                             handleClose()
                         }
@@ -163,6 +167,10 @@ export default function OfficersModal({ show, setShow, type, id }) {
             </Modal.Header>
             <Modal.Body>
                 <Form validated={validated}>
+                    <Form.Group>
+                        <Form.Label htmlFor="order">Order</Form.Label>
+                        <Form.Control required type="number" name="order" placeholder="Ex: 0 (Appear first on site)" onChange={handleInputChange} value={order} />
+                    </Form.Group>
                     <Form.Group>
                         <Form.Label htmlFor="name">Name</Form.Label>
                         <Form.Control required name="name" placeholder="First Last" onChange={handleInputChange} value={name} />
