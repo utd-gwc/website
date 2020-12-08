@@ -15,6 +15,7 @@ exports.create = (req, res) => {
         bio: req.body.bio,
         profilePhotoUrl: req.body.profilePhotoUrl,
         externalLinks: req.body.externalLinks,
+        order: req.body.order || 99,
     });
 
     // Save Officer in the database

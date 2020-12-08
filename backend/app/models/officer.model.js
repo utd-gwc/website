@@ -8,6 +8,7 @@ module.exports = mongoose => {
                 bio: String,
                 profilePhotoUrl: String,
                 externalLinks: {type: Map, of: String},
+                order: Number,
             },
             {timestamps: true}
         )
