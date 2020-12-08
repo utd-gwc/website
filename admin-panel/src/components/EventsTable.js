@@ -16,8 +16,8 @@ export default function EventsTable({ data, triggerEventModal, triggerDeleteEven
                 Header: 'ID',
                 accessor: '_id',
                 Cell: ({ value }) => {
-                    return(
-                        <div style={{width: 100, overflow: 'auto'}}>
+                    return (
+                        <div style={{ width: 100, overflow: 'auto' }}>
                             {value}
                         </div>
                     )
@@ -47,7 +47,7 @@ export default function EventsTable({ data, triggerEventModal, triggerDeleteEven
                                     <img alt="Flyer for GWC event" src={value} style={{ maxWidth: 200 }} />
                                 </Zoom>
                                 <a href={value} target="_blank" rel="noreferrer">
-                                {value}
+                                    {value}
                                 </a>
                             </div>
                         )
@@ -115,10 +115,10 @@ export default function EventsTable({ data, triggerEventModal, triggerDeleteEven
                                 )
                             })}
                             <td style={{ align: 'center' }}>
-                                <Button variant='outline-primary' style={{ width: 100, marginBottom: 15 }} onClick={() => {triggerEventModal('EDIT', row.cells[0].value)}}>
+                                <Button variant='outline-primary' style={{ width: 100, marginBottom: 15 }} onClick={() => { triggerEventModal('EDIT', row.cells[0].value) }}>
                                     Edit
                                 </Button>
-                                <Button variant={oldEvent ? 'warning' : "outline-danger"} style={{ width: 100 }} onClick={() => {triggerDeleteEventModal(row.cells[0].value, row.cells[1].value, oldEvent)}}>
+                                <Button variant={oldEvent ? 'warning' : "outline-danger"} style={{ width: 100 }} onClick={() => { triggerDeleteEventModal(row.cells[0].value, row.cells[1].value, oldEvent) }}>
                                     Delete
                                 </Button>
                             </td>

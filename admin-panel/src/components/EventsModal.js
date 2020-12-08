@@ -27,7 +27,7 @@ function validateInput(eachEntry) {
     }
 }
 
-export default function EventsModal({ show, setShow, type, id }) {
+export default function EventsModal({ show, setShow, type, id, refetchData }) {
 
     const initialInputState = useMemo(() => {
         return {
@@ -98,6 +98,7 @@ export default function EventsModal({ show, setShow, type, id }) {
                             alert('Error posting')
                         } else {
                             alert('Success!')
+                            refetchData()
                             setValidated(false)
                             setEachEntry(initialInputState)
                             handleClose()
@@ -124,6 +125,7 @@ export default function EventsModal({ show, setShow, type, id }) {
                             alert('Error updating!')
                         } else {
                             alert('Success!')
+                            refetchData()
                             setValidated(false)
                             setEachEntry(initialInputState)
                             handleClose()

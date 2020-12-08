@@ -14,6 +14,9 @@ export default function EventsPage() {
     const [events, setEvents] = useState(null);
     const [showRawData, setShowRawData] = useState(false);
 
+    const [refetch, setRefetch] = useState(false);
+    const [fetching, setFetching] = useState(false);
+
     function triggerEventModal(type, id) {
         setModalType(type);
         if (type === 'ADD' && modalID != null) {
@@ -30,12 +33,18 @@ export default function EventsPage() {
         setShowDeleteModal(true);
     }
 
+    const toggleRefetch = () => {
+        setRefetch(!refetch)
+    }
+
     useEffect(() => {
+        setFetching(true);
         fetch("https://utd-gwc-api.herokuapp.com/api/events/")
             .then(res => res.json())
             .then((events) => setEvents(events))
-            .catch((err) => console.log(err));
-    }, []);
+            .then(() => setFetching(false))
+            .catch((err) => { console.log(err); setFetching(false) });
+    }, [refetch]);
 
     return (
         <div>
@@ -47,9 +56,9 @@ export default function EventsPage() {
                     Add
                 </Button>
             </div>
-            {events === null ? (
+            {events === null ? fetching ? (
                 <p>Loading...</p>
-            ) : showRawData ?
+            ) : (<p>There was an error loading events. Please try again later.</p>) : showRawData ?
                     (
                         <div><pre>{JSON.stringify(events, null, 2)}</pre></div>
                     ) :
@@ -57,8 +66,8 @@ export default function EventsPage() {
                         <EventsTable data={events} triggerEventModal={triggerEventModal} triggerDeleteEventModal={triggerDeleteEventModal} />
                     )
             }
-            <EventsModal show={showModal} setShow={setShowModal} type={modalType} id={modalID} />
-            <DeleteEventModal show={showDeleteModal} setShow={setShowDeleteModal} eventInfo={deleteModalInfo} />
+            <EventsModal show={showModal} setShow={setShowModal} type={modalType} id={modalID} refetchData={toggleRefetch} />
+            <DeleteEventModal show={showDeleteModal} setShow={setShowDeleteModal} eventInfo={deleteModalInfo} refetchData={toggleRefetch} />
         </div>
     )
 }
