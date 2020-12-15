@@ -43,6 +43,7 @@ app.get('*', (req, res) => {
 
 require("./app/routes/event.routes.js")(app);
 require("./app/routes/officer.routes.js")(app);
+require("./app/routes/post.routes.js")(app);
 
 // set port, listen for requests
 const PORT = process.env.PORT || 8080;

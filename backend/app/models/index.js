@@ -6,5 +6,6 @@ db.mongoose = mongoose;
 db.url = process.env.MONGODB_URI;
 db.events = require("./event.model.js")(mongoose);
 db.officers = require("./officer.model.js")(mongoose);
+db.posts = require("./post.model.js")(mongoose);
 
 module.exports = db;
