@@ -6,6 +6,7 @@ module.exports = mongoose => {
                 alt: {type: String, trim: true},
                 url: {type: String, unique: true, required: true},
                 src: {type: String, unique: true, required: true},
+                posted: {type: Date, required: true}
             },
             {timestamps: true}
         )

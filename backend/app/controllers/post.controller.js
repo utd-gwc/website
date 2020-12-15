@@ -3,7 +3,7 @@ const Post = db.posts;
 
 // Create and save a new Post
 exports.create = (req, res) => {
-    if (req.body.url == null || req.body.src == null) {
+    if (req.body.url == null || req.body.src == null || req.body.posted == null) {
         res.status(400).send({message: "URL and/or src can not be empty!"});
         return;
     }
@@ -13,6 +13,7 @@ exports.create = (req, res) => {
         url: req.body.url,
         src: req.body.src,
         alt: req.body.alt,
+        posted: req.body.posted,
     });
 
     // Save Post in the database
@@ -24,7 +25,7 @@ exports.create = (req, res) => {
         .catch(err => {
             res.status(500).send({
                 message:
-                    err.message || "Some error ocurred while creating an officer."
+                    err.message || "Some error ocurred while creating an post."
             });
         });
 
@@ -42,7 +43,7 @@ exports.findAll = (req, res) => {
         })
         .catch(err => {
             res.status(500).send({
-                message: err.message || "Some error occurred while retrieving officers."
+                message: err.message || "Some error occurred while retrieving posts."
             });
         });
 };
@@ -54,13 +55,13 @@ exports.findOne = (req, res) => {
     Post.findById(id)
         .then(data => {
             if(data == null) {
-                res.status(404).send({ message: "Could not find Officer with id " + id})
+                res.status(404).send({ message: "Could not find Post with id " + id})
             } else {
                 res.send(data);
             }
         })
         .catch(err => {
-            res.status(500).send({message: "Error retrieving Officer with id=" + id});
+            res.status(500).send({message: "Error retrieving Post with id=" + id});
         });
 };
 
